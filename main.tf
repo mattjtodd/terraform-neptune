@@ -115,8 +115,6 @@ resource "aws_security_group" "neptune_example" {
     self = true
   }
 
-
-  # Allow SSH from anywhere...
   ingress {
     from_port   = 22
     to_port     = 22
