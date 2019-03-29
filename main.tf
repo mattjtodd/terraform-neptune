@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-west-1"
+  region  = "eu-west-1"
   profile = "sandbox"
 }
 
@@ -23,14 +23,14 @@ resource "aws_subnet" "ssh-tunnel" {
   vpc_id                  = "${aws_vpc.ssh-tunnel.id}"
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
-  availability_zone = "${data.aws_availability_zones.available.names[0]}"
+  availability_zone       = "${data.aws_availability_zones.available.names[0]}"
 }
 
 resource "aws_subnet" "ssh-tunnel2" {
   vpc_id                  = "${aws_vpc.ssh-tunnel.id}"
   cidr_block              = "10.0.2.0/24"
   map_public_ip_on_launch = true
-  availability_zone = "${data.aws_availability_zones.available.names[1]}"
+  availability_zone       = "${data.aws_availability_zones.available.names[1]}"
 }
 
 data "http" "workstation-external-ip" {
@@ -56,16 +56,16 @@ resource "aws_neptune_cluster" "example" {
   skip_final_snapshot                 = true
   iam_database_authentication_enabled = false
   apply_immediately                   = true
-  vpc_security_group_ids              = [ "${aws_security_group.neptune_example.id}" ]
+  vpc_security_group_ids              = ["${aws_security_group.neptune_example.id}"]
   neptune_subnet_group_name           = "${aws_neptune_subnet_group.example.name}"
 }
 
 resource "aws_neptune_cluster_instance" "example" {
-  count              = "${var.neptune_count}"
-  cluster_identifier = "${aws_neptune_cluster.example.id}"
-  engine             = "neptune"
-  instance_class     = "db.r4.large"
-  apply_immediately  = true
+  count                     = "${var.neptune_count}"
+  cluster_identifier        = "${aws_neptune_cluster.example.id}"
+  engine                    = "neptune"
+  instance_class            = "db.r4.large"
+  apply_immediately         = true
   neptune_subnet_group_name = "${aws_neptune_subnet_group.example.name}"
 }
 
@@ -91,16 +91,16 @@ data "aws_ami" "bastion-ami" {
 
 resource "aws_instance" "neptune-ec2-connector" {
   connection {
-    user = "ec2-user"
-    agent = "false"
+    user        = "ec2-user"
+    agent       = "false"
     private_key = "${file(var.private_key_path)}"
   }
 
-  instance_type = "t2.micro"
-  ami = "${data.aws_ami.bastion-ami.id}"
-  key_name = "${aws_key_pair.auth.id}"
+  instance_type          = "t2.micro"
+  ami                    = "${data.aws_ami.bastion-ami.id}"
+  key_name               = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.neptune_example.id}"]
-  subnet_id = "${aws_subnet.ssh-tunnel.id}"
+  subnet_id              = "${aws_subnet.ssh-tunnel.id}"
 }
 
 resource "aws_security_group" "neptune_example" {
@@ -109,10 +109,10 @@ resource "aws_security_group" "neptune_example" {
   vpc_id      = "${aws_vpc.ssh-tunnel.id}"
 
   ingress {
-    from_port   = 8182
-    to_port     = 8182
-    protocol    = "tcp"
-    self = true
+    from_port = 8182
+    to_port   = 8182
+    protocol  = "tcp"
+    self      = true
   }
 
   ingress {
