@@ -1,6 +1,5 @@
 provider "aws" {
-  region  = "eu-west-1"
-  profile = "sandbox"
+  region  = "eu-west-2"
 }
 
 data "aws_availability_zones" "available" {}
