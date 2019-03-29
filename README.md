@@ -8,3 +8,5 @@ In addition it will create a bastion through which you can tunnel to the vpc end
 
 The outputs from the terraform template will give you a suggestion for how to do the port forwarding so it should be a case of 
 just copy and paste and you'll have local access to your cluster endpoints.
+
+It's worth noting that this can take at least 10 mins to complete the creations of resources. 
